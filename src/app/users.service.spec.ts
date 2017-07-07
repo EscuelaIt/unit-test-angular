@@ -134,4 +134,244 @@ describe('UsersService', () => {
     );
 
   });
+
+  describe('test for createUser', ()=>{
+
+    it("should return the user's data",
+      inject([UsersService, MockBackend], fakeAsync((userService, mockBackend)=>{
+        //Arrange
+        let dataResponse, dataError;
+        let userMock = {
+          "id": 1,
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz"
+        }
+        let mockResponse = new ResponseOptions({body: JSON.stringify(userMock)});
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://jsonplaceholder.typicode.com/users');
+          connection.mockRespond(new Response(mockResponse));
+        });
+
+        //Act
+        let newUser = {
+          name: "Leanne Graham",
+          username: "Bret",
+          email: "Sincere@april.biz"
+        }
+        userService.createUser(newUser)
+        .subscribe(
+          response => { // success
+            dataResponse = response;
+          },
+          error => { //error
+            dataError = error;
+          }
+        );
+        tick();
+
+        //Assert
+        expect(dataError).toBeUndefined();
+        expect(dataResponse.id).toBeDefined();
+        expect(dataResponse.name).toEqual('Leanne Graham');
+        expect(dataResponse.username).toEqual('Bret');
+        expect(dataResponse.email).toEqual('Sincere@april.biz');
+
+      }))
+    );
+
+    it("should return an error",
+      inject([UsersService, MockBackend], fakeAsync((userService, mockBackend)=>{
+        //Arrange
+        let dataResponse, dataError;
+        let userMock = {
+          "id": 1,
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz"
+        }
+        let mockResponse = new ResponseOptions({body: JSON.stringify(userMock)});
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://jsonplaceholder.typicode.com/users');
+          connection.mockError(new Error('error'));
+        });
+
+        //Act
+        let newUser = {
+          name: "Leanne Graham",
+          username: "Bret",
+          email: "Sincere@april.biz"
+        }
+        userService.createUser(newUser)
+        .subscribe(
+          response => { // success
+            dataResponse = response;
+          },
+          error => { //error
+            dataError = error;
+          }
+        );
+        tick();
+
+        //Assert
+        expect(dataError).toBeDefined();
+        expect(dataResponse).toBeUndefined();
+
+      }))
+    );
+
+  });
+
+  describe('test for updateUser', ()=>{
+
+    it("should return the user's data",
+      inject([UsersService, MockBackend], fakeAsync((userService, mockBackend)=>{
+        //Arrange
+        let dataResponse, dataError;
+        let userMock = {
+          "id": 12,
+          "name": "Nicolas Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz"
+        }
+        let mockResponse = new ResponseOptions({body: JSON.stringify(userMock)});
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://jsonplaceholder.typicode.com/users/12');
+          connection.mockRespond(new Response(mockResponse));
+        });
+
+        //Act
+        let newUser = {
+          id: 12,
+          name: "Nicolas Graham",
+          username: "Bret",
+          email: "Sincere@april.biz"
+        }
+        userService.updateUser(newUser)
+        .subscribe(
+          response => { // success
+            dataResponse = response;
+          },
+          error => { //error
+            dataError = error;
+          }
+        );
+        tick();
+
+        //Assert
+        expect(dataError).toBeUndefined();
+        expect(dataResponse.id).toBeDefined();
+        expect(dataResponse.name).toEqual('Nicolas Graham');
+        expect(dataResponse.username).toEqual('Bret');
+        expect(dataResponse.email).toEqual('Sincere@april.biz');
+
+      }))
+    );
+
+    it("should return an error",
+      inject([UsersService, MockBackend], fakeAsync((userService, mockBackend)=>{
+        //Arrange
+        let dataResponse, dataError;
+        let userMock = {
+          "id": 12,
+          "name": "Nicolas Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz"
+        }
+        let mockResponse = new ResponseOptions({body: JSON.stringify(userMock)});
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://jsonplaceholder.typicode.com/users/12');
+          connection.mockError(new Error('error'));
+        });
+
+        //Act
+        let newUser = {
+          id: 12,
+          name: "Nicolas Graham",
+          username: "Bret",
+          email: "Sincere@april.biz"
+        }
+        userService.updateUser(newUser)
+        .subscribe(
+          response => { // success
+            dataResponse = response;
+          },
+          error => { //error
+            dataError = error;
+          }
+        );
+        tick();
+
+        //Assert
+        expect(dataError).toBeDefined();
+        expect(dataResponse).toBeUndefined();
+
+      }))
+    );
+
+  });
+
+  describe('test for deleteUser', ()=>{
+
+    it("should return the user's data",
+      inject([UsersService, MockBackend], fakeAsync((userService, mockBackend)=>{
+        //Arrange
+        let dataResponse, dataError;
+        let mockResponse = new ResponseOptions({body: '{}'});
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://jsonplaceholder.typicode.com/users/12');
+          expect(connection.request.headers.get('API-TOKEN')).toEqual('xxxyyy');
+          connection.mockRespond(new Response(mockResponse));
+        });
+
+        //Act
+        userService.deleteUser(12)
+        .subscribe(
+          response => { // success
+            dataResponse = response;
+          },
+          error => { //error
+            dataError = error;
+          }
+        );
+        tick();
+
+        //Assert
+        expect(dataError).toBeUndefined();
+        expect(dataResponse).toEqual({});
+
+      }))
+    );
+
+    it("should return an error",
+      inject([UsersService, MockBackend], fakeAsync((userService, mockBackend)=>{
+        //Arrange
+        let dataResponse, dataError;
+        let mockResponse = new ResponseOptions({body: '{}'});
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe('http://jsonplaceholder.typicode.com/users/12');
+          connection.mockError(new Error('error'));
+        });
+
+        //Act
+        userService.deleteUser(12)
+        .subscribe(
+          response => { // success
+            dataResponse = response;
+          },
+          error => { //error
+            dataError = error;
+          }
+        );
+        tick();
+
+        //Assert
+        expect(dataError).toBeDefined();
+        expect(dataResponse).toBeUndefined();
+
+      }))
+    );
+
+  });
+
 });
