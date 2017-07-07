@@ -36,7 +36,7 @@ describe('UsersService', () => {
   describe('test for getUser', ()=>{
 
     it("should return the user's data with an id",
-      inject([UsersService, MockBackend], fakeAsync((usersService, mockBackend: MockBackend)=>{
+      inject([UsersService, MockBackend], fakeAsync((usersService, mockBackend)=>{
 
         //Arrange
         let dataResponse;
@@ -77,7 +77,6 @@ describe('UsersService', () => {
         tick();
 
         //Assert
-
         expect(dataResponse.id).toBeDefined();
         expect(dataResponse.name).toBeDefined();
         expect(dataResponse.address).toBeDefined();
@@ -133,7 +132,6 @@ describe('UsersService', () => {
         tick();
 
         //Assert
-
         expect(dataResponse).toBeUndefined();
         expect(dataError).toBeDefined();
 
