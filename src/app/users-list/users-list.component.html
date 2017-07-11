@@ -1,0 +1,4 @@
+<app-user-row 
+  *ngFor="let person of persons"
+  [person]="person"
+  (onSelected)="onSelect($event)"></app-user-row>

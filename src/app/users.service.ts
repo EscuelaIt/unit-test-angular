@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { Person } from './person';
 
 @Injectable()
 export class UsersService {
@@ -11,6 +12,11 @@ export class UsersService {
   constructor(
     private http: Http
   ) { }
+
+  getAll():Observable<Person[]>{
+    return this.http.get(`${this.path}`, this.makeRequestOptions())
+    .map(response => response.json());
+  }
 
   getUser(id: number): Observable<any>{
     return this.http.get(`${this.path}/${id}`, this.makeRequestOptions())

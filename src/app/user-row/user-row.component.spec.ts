@@ -62,4 +62,24 @@ describe("UserRowComponent", ()=>{
     fixture.detectChanges();
     expect(de.nativeElement.textContent).toContain('otro apellido');
   });
+
+  it('should display un text for imc', () => {
+    let button  = fixture.debugElement.query(By.css('.btn-imc')); // find hero element
+    button.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    expect(button.nativeElement.textContent == '').toBeFalsy();
+    expect(component.imc== '').toBeFalsy();
+  });
+
+  it('should raise selected event when clicked', () => {
+    let selectedPerson: Person;
+    component.onSelected.subscribe((person: Person) => {
+      selectedPerson = person
+    });
+    let button  = fixture.debugElement.query(By.css('.btn-person')); // find hero element
+    button.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    expect(selectedPerson.name).toEqual('nicolas');
+  });
 });
+
