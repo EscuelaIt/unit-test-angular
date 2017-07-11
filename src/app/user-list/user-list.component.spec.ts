@@ -5,6 +5,7 @@ import { DebugElement }    from '@angular/core';
 import { UserListComponent } from './user-list.component';
 import { UserRowComponent } from './../user-row/user-row.component';
 import { UsersService } from './../users.service';
+import { MockUsersService } from './../users.service.mock';
 
 describe('UserListComponent', () => {
   let component: UserListComponent;
@@ -14,7 +15,7 @@ describe('UserListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UserListComponent, UserRowComponent ],
       providers: [
-        UsersService
+        { provide: UsersService, useClass: MockUsersService },
       ]
     })
     .compileComponents();
