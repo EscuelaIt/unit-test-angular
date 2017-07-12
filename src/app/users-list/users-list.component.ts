@@ -29,4 +29,11 @@ export class UsersListComponent implements OnInit {
     this.selectedPerson = person;
   }
 
+  getUser(){
+    this.usersService.getUser(23)
+    .subscribe(user =>{
+      this.persons[0] = user;
+    });
+  }
+
 }

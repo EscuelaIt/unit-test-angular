@@ -1,23 +1,30 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, inject } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
+import { HttpModule }    from '@angular/http';
 
 import { UsersListComponent } from './users-list.component';
 import { UserRowComponent } from './../user-row/user-row.component';
 import { UsersService } from './../users.service';
 import { MockUsersService } from './../users.service.mock';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
+import { Person } from './../person';
+
 
 describe('UsersListComponent', () => {
   let component: UsersListComponent;
   let fixture: ComponentFixture<UsersListComponent>;
-  let userService: MockUsersService;
+  let userService: UsersService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UsersListComponent, UserRowComponent ],
+      imports: [ HttpModule ],
       providers: [
-        {provide: UsersService, useClass: MockUsersService}
+        {provide: UsersService, useClass: UsersService}
       ]
     })
     .compileComponents();
@@ -27,12 +34,42 @@ describe('UsersListComponent', () => {
     fixture = TestBed.createComponent(UsersListComponent);
     component = fixture.componentInstance;
     userService = fixture.debugElement.injector.get(UsersService);
-    fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  it('should be created', ()=>{
+    let spy = spyOn(userService, 'getAll')
+    .and.returnValue(Observable.of([
+      new Person('Nicolas NICO','asas',12,12,12)
+    ]));
+    fixture.detectChanges();
+    expect(userService.getAll).toHaveBeenCalled();
   });
+
+  it('should get user', ()=>{
+    fixture.detectChanges();
+    spyOn(userService, 'getUser')
+    .and.returnValue(Observable.of(
+      new Person('Nicolas NICO','asas',12,12,12)
+    ));
+    component.getUser();
+    //fixture.detectChanges();
+    expect(userService.getUser).toHaveBeenCalled();
+    expect(userService.getUser).toHaveBeenCalledWith(23);
+    expect(component.persons[0].name).toEqual('Nicolas NICO');
+  });
+
+  // it('should be created', fakeAsync(()=>{
+  //   fixture.detectChanges();
+  //   let spy = spyOn(userService, 'getAll');
+  //   tick();
+  //   fixture.detectChanges();
+  //   //let spy = spyOn(userService, 'getAll');
+    
+    
+  //   //fixture.detectChanges();
+  //   //console.log('as',spy.calls.any());
+  //   expect(spy.calls.any()).toBe(true);
+  // }));
 
   // it('should be created', () => {
   //   console.log(component.persons);

@@ -4,16 +4,11 @@ import { Person } from './person';
 
 export class MockUsersService {
 
+ 
   getAll():Observable<Person[]>{
     return Observable.of([
-      {
-        name: 'nicolas',
-        lastname: 'molina'
-      },
-      {
-        name: 'zulema',
-        lastname: 'molina'
-      }
-    ])
+      new Person('asas','asas',12,12,12)
+    ]);
   }
+
 }
